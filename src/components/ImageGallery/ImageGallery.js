@@ -13,7 +13,7 @@ const ImageGallery = ({ images, openModal }) => {
   );
 };
 
-ImageGallery.prototype = {
+ImageGallery.propTypes = {
   images: PropTypes.array.isRequired,
   openModal: PropTypes.func.isRequired,
 };

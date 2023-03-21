@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchImages } from './service/imagesApi';
 import ImageGallery from './ImageGallery';
 import Loader from './Loader';
 import Button from './Button';
@@ -25,13 +25,11 @@ export class App extends Component {
       prevState.query !== this.state.query ||
       prevState.page !== this.state.page
     ) {
+      // this.resetImages();
       this.setState({ isLoad: true });
 
       try {
-        const response = await axios.get(
-          `https://pixabay.com/api/?q=${query}&page=${page}&key=33197930-0348e44db3821c8c552d6d0a0&image_type=photo&orientation=horizontal&per_page=12&`
-        );
-        console.log(response);
+        const response = await fetchImages(query, page);
         if (response.data.hits.length === 0) {
           toast.error('Sorry! Nothing found. Try again');
         }
@@ -64,11 +62,15 @@ export class App extends Component {
   handleSubmit = (searchValues, { resetForm }) => {
     this.setState({ query: searchValues });
     this.resetPage();
-    if (searchValues === this.state.query && this.state.page !== 1) {
+    if (
+      (searchValues === this.state.query && this.state.page !== 1) ||
+      searchValues !== this.state.query
+    ) {
       this.resetImages();
     }
     resetForm();
   };
+
   toggleModal = largeImageURL => {
     this.setState({ largeImageURL });
 
@@ -91,7 +93,7 @@ export class App extends Component {
           />
         )}
         {isLoad && <Loader />}
-        {isLoadMore && <Button onClick={this.loadMore} />}
+        {isLoadMore && !isLoad && <Button onClick={this.loadMore} />}
         <ToastContainer autoClose={1500} />
         {isModalOpen && (
           <Modal largImage={largeImageURL} onClose={this.toggleModal} />

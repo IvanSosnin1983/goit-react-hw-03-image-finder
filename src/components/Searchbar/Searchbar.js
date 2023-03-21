@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
 import css from '../Searchbar/Searchbar.module.css';
 import { ImSearch } from 'react-icons/im';
@@ -32,13 +33,16 @@ const Searchbar = ({ onSubmit }) => {
             autoFocus
             placeholder="Search images and photos"
             name="query"
-            // onChange={this.handleInputChange}
           />
         </Form>
       </Formik>
       <ToastContainer autoClose={2000} />
     </header>
   );
+};
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default Searchbar;

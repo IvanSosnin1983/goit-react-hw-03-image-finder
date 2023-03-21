@@ -18,7 +18,7 @@ const ImageGalleryItem = ({ image, openModal }) => {
   );
 };
 
-ImageGalleryItem.prototype = {
+ImageGalleryItem.propTypes = {
   image: PropTypes.shape({
     webformatURL: PropTypes.string.isRequired,
     largeImageURL: PropTypes.string.isRequired,
